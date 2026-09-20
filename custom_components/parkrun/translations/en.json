@@ -1,0 +1,58 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect parkrun",
+        "description": "Enter the barcode ID from your parkrun barcode. No parkrun password is required — statistics come from your public results page.",
+        "data": {
+          "athlete_id": "Athlete ID",
+          "country": "Country website"
+        },
+        "data_description": {
+          "athlete_id": "Your barcode number, for example A1234567 or 1234567.",
+          "country": "Choose the parkrun website you normally use. Athlete IDs are global, but results are served from the country sites."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to reach parkrun. Try again later.",
+      "invalid_athlete_id": "Enter a numeric athlete ID, optionally prefixed with A.",
+      "not_found": "No public results page was found for that athlete ID and country.",
+      "unknown": "Unexpected error. Check the Home Assistant logs."
+    },
+    "abort": {
+      "already_configured": "This parkrun athlete is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "total_runs": { "name": "Total parkruns" },
+      "junior_runs": { "name": "Junior parkruns" },
+      "volunteer_count": { "name": "Volunteer credits" },
+      "events_attended": { "name": "Events attended" },
+      "personal_best": { "name": "Personal best" },
+      "best_age_grade": { "name": "Best age grade" },
+      "latest_event": { "name": "Latest event" },
+      "latest_event_date": { "name": "Latest event date" },
+      "latest_time": { "name": "Latest time" },
+      "latest_position": { "name": "Latest position" },
+      "latest_gender_position": { "name": "Latest gender position" },
+      "latest_age_grade": { "name": "Latest age grade" },
+      "latest_age_category": { "name": "Latest age category" },
+      "first_event": { "name": "First parkrun" },
+      "first_event_date": { "name": "First parkrun date" },
+      "run_club": { "name": "Run club" },
+      "next_run_milestone": { "name": "Next run milestone" },
+      "runs_to_next_milestone": { "name": "Parkruns to next milestone" },
+      "volunteer_club": { "name": "Volunteer club" },
+      "next_volunteer_milestone": { "name": "Next volunteer milestone" },
+      "volunteer_to_next_milestone": { "name": "Volunteer credits to next milestone" },
+      "home_run": { "name": "Home parkrun" },
+      "club": { "name": "Running club" }
+    },
+    "binary_sensor": {
+      "latest_was_pb": { "name": "Latest run was a PB" },
+      "latest_first_timer": { "name": "Latest run was a first timer" }
+    }
+  }
+}
