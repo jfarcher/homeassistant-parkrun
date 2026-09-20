@@ -23,10 +23,14 @@ Results are polled every 6 hours.
 
 ## Install
 
-1. Copy `custom_components/parkrun` into your Home Assistant `config/custom_components/` directory.
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jfarcher&repository=homeassistant-parkrun&category=integration)
+
+1. Click the badge above to add this repository in HACS, then download **parkrun**.
 2. Restart Home Assistant.
 3. Go to **Settings → Devices & services → Add integration** and search for **parkrun**.
 4. Enter your barcode ID (`A1234567` or `1234567`) and the country site you normally use.
+
+To install without HACS, copy `custom_components/parkrun` into your Home Assistant `config/custom_components/` directory, then continue from step 2.
 
 ## Notes
 
