@@ -98,10 +98,10 @@ def parse_athlete_pages(
     timed = [item for item in parsed_results if item.finish_seconds is not None]
     if fastest_time is None and timed:
         personal_best = min(timed, key=lambda item: item.finish_seconds or 0)
-        fastest_time = personal_best.finish_time
         fastest_seconds = personal_best.finish_seconds
     else:
         _, fastest_seconds = _parse_run_time(fastest_time)
+    fastest_time = _format_run_time(fastest_seconds)
 
     if best_age_grade is None:
         graded = [item for item in parsed_results if item.age_grade is not None]
@@ -167,7 +167,7 @@ def parse_athlete_pages(
         best_age_grade=best_age_grade,
         latest_event_name=latest.event_name if latest else None,
         latest_event_date=latest.event_date if latest else None,
-        latest_time=latest.finish_time if latest else None,
+        latest_time=_format_run_time(latest.finish_seconds) if latest else None,
         latest_time_seconds=latest.finish_seconds if latest else None,
         latest_position=latest.finish_position if latest else None,
         latest_gender_position=latest.gender_position if latest else None,
@@ -443,7 +443,18 @@ def _parse_run_time(value: str | None) -> tuple[str | None, int | None]:
             return text, None
     except ValueError:
         return text, None
-    return text, hours * 3600 + minutes * 60 + seconds
+    return _format_run_time(hours * 3600 + minutes * 60 + seconds), hours * 3600 + minutes * 60 + seconds
+
+
+def _format_run_time(seconds: int | None) -> str | None:
+    """Return a parkrun-style clock time, e.g. 23:48 or 1:02:34."""
+    if seconds is None:
+        return None
+    hours, remainder = divmod(int(seconds), 3600)
+    minutes, secs = divmod(remainder, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
 
 
 def _parse_date(value: str | None) -> date | None:

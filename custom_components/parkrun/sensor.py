@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import PERCENTAGE, UnitOfTime
+from homeassistant.const import PERCENTAGE
 
 from .entity import ParkrunEntity
 from .models import ParkrunAthleteData
@@ -71,9 +71,7 @@ SENSOR_DESCRIPTIONS: tuple[ParkrunSensorEntityDescription, ...] = (
         key="personal_best",
         translation_key="personal_best",
         icon="mdi:trophy",
-        device_class=SensorDeviceClass.DURATION,
-        native_unit_of_measurement=UnitOfTime.SECONDS,
-        value_fn=lambda data: data.personal_best_seconds,
+        value_fn=lambda data: data.personal_best_time,
     ),
     ParkrunSensorEntityDescription(
         key="best_age_grade",
@@ -101,9 +99,7 @@ SENSOR_DESCRIPTIONS: tuple[ParkrunSensorEntityDescription, ...] = (
         key="latest_time",
         translation_key="latest_time",
         icon="mdi:timer",
-        device_class=SensorDeviceClass.DURATION,
-        native_unit_of_measurement=UnitOfTime.SECONDS,
-        value_fn=lambda data: data.latest_time_seconds,
+        value_fn=lambda data: data.latest_time,
     ),
     ParkrunSensorEntityDescription(
         key="latest_position",

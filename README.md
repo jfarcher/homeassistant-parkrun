@@ -1,5 +1,9 @@
 # parkrun for Home Assistant
 
+<p align="center">
+  <img src="custom_components/parkrun/brand/logo.png" alt="parkrun" width="300" />
+</p>
+
 Custom integration that pulls public parkrun statistics into Home Assistant as sensors.
 
 Setup is only your barcode ID and country website. parkrun barcodes are not accounts with passwords; the [official app API](https://developer.parkrun.com/#!/) needs a profile login that most parkrunners never create. This integration reads the same public results page anyone can open in a browser.
