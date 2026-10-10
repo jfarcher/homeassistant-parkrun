@@ -31,6 +31,7 @@
       "volunteer_count": { "name": "Volunteer credits" },
       "events_attended": { "name": "Events attended" },
       "personal_best": { "name": "Personal best" },
+      "junior_personal_best": { "name": "Junior personal best" },
       "best_age_grade": { "name": "Best age grade" },
       "latest_event": { "name": "Latest event" },
       "latest_event_date": { "name": "Latest event date" },

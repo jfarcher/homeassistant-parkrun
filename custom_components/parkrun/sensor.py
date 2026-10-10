@@ -74,6 +74,12 @@ SENSOR_DESCRIPTIONS: tuple[ParkrunSensorEntityDescription, ...] = (
         value_fn=lambda data: data.personal_best_time,
     ),
     ParkrunSensorEntityDescription(
+        key="junior_personal_best",
+        translation_key="junior_personal_best",
+        icon="mdi:trophy-outline",
+        value_fn=lambda data: data.junior_personal_best_time,
+    ),
+    ParkrunSensorEntityDescription(
         key="best_age_grade",
         translation_key="best_age_grade",
         icon="mdi:percent",

@@ -13,7 +13,7 @@ Setup is only your barcode ID and country website. parkrun barcodes are not acco
 After setup, Home Assistant creates a device for the athlete and sensors including:
 
 - Total parkruns, junior parkruns, volunteer credits, events attended
-- Personal best and best age grade
+- 5k personal best, junior personal best, and best age grade
 - Latest event, date, time, positions, age grade, and age category
 - First parkrun and date, and the event you run most often
 - Current run / volunteer club and how many to the next milestone

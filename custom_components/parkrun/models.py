@@ -46,6 +46,8 @@ class ParkrunAthleteData:
 
     personal_best_time: str | None
     personal_best_seconds: int | None
+    junior_personal_best_time: str | None
+    junior_personal_best_seconds: int | None
     best_age_grade: float | None
 
     latest_event_name: str | None

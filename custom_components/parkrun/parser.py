@@ -77,9 +77,7 @@ def parse_athlete_pages(
     heading_total = _first_int(_TOTAL_RUNS.search(profile_html))
     junior_from_text = _first_int(_JUNIOR_RUNS.search(profile_html))
     junior_from_results = sum(
-        1
-        for item in parsed_results
-        if item.event_name and "junior" in item.event_name.lower()
+        1 for item in parsed_results if _is_junior_event(item.event_name)
     )
     junior_runs = (
         junior_from_text if junior_from_text is not None else junior_from_results
@@ -94,19 +92,19 @@ def parse_athlete_pages(
         total_runs = len(parsed_results)
         adult_runs = max(total_runs - junior_runs, 0)
 
-    fastest_time, best_age_grade = _summary_bests(summary)
-    timed = [item for item in parsed_results if item.finish_seconds is not None]
-    if fastest_time is None and timed:
-        personal_best = min(timed, key=lambda item: item.finish_seconds or 0)
-        fastest_seconds = personal_best.finish_seconds
-    else:
-        _, fastest_seconds = _parse_run_time(fastest_time)
+    adult_results = [item for item in parsed_results if not _is_junior_event(item.event_name)]
+    junior_results = [item for item in parsed_results if _is_junior_event(item.event_name)]
+    adult_best = _fastest_result(adult_results)
+    junior_best = _fastest_result(junior_results)
+    fastest_seconds = adult_best.finish_seconds if adult_best else None
     fastest_time = _format_run_time(fastest_seconds)
+    junior_best_seconds = junior_best.finish_seconds if junior_best else None
+    junior_best_time = _format_run_time(junior_best_seconds)
 
-    if best_age_grade is None:
-        graded = [item for item in parsed_results if item.age_grade is not None]
-        if graded:
-            best_age_grade = max(item.age_grade or 0 for item in graded)
+    best_age_grade = _best_age_grade(adult_results)
+    if best_age_grade is None and not adult_results:
+        _summary_time, summary_grade = _summary_bests(summary)
+        best_age_grade = summary_grade or _best_age_grade(parsed_results)
 
     latest = parsed_results[0] if parsed_results else None
     first = parsed_results[-1] if parsed_results else None
@@ -120,9 +118,14 @@ def parse_athlete_pages(
 
     latest_was_pb = None
     if latest:
+        series_best = (
+            junior_best_seconds
+            if _is_junior_event(latest.event_name)
+            else fastest_seconds
+        )
         latest_was_pb = latest.was_pb
-        if latest_was_pb is False and fastest_seconds and latest.finish_seconds:
-            latest_was_pb = latest.finish_seconds == fastest_seconds
+        if latest_was_pb is False and series_best and latest.finish_seconds:
+            latest_was_pb = latest.finish_seconds == series_best
 
     latest_first_timer = None
     if latest and events:
@@ -154,7 +157,7 @@ def parse_athlete_pages(
         last_name=full_name.split(" ", 1)[1] if " " in full_name else "",
         full_name=full_name,
         club_name=None,
-        home_run_name=_home_event(events),
+        home_run_name=_home_event(events, prefer_senior=bool(adult_results)),
         home_run_location=None,
         avatar_url=None,
         profile_url=profile_url,
@@ -164,6 +167,8 @@ def parse_athlete_pages(
         events_attended=events_attended,
         personal_best_time=fastest_time,
         personal_best_seconds=fastest_seconds,
+        junior_personal_best_time=junior_best_time,
+        junior_personal_best_seconds=junior_best_seconds,
         best_age_grade=best_age_grade,
         latest_event_name=latest.event_name if latest else None,
         latest_event_date=latest.event_date if latest else None,
@@ -373,14 +378,37 @@ def _events_attended(
     return len({_event_key(item.event_name) for item in results if item.event_name})
 
 
-def _home_event(events: dict[str, Any] | None) -> str | None:
+def _home_event(
+    events: dict[str, Any] | None, *, prefer_senior: bool = False
+) -> str | None:
     if not events or not events["body"]:
         return None
+    rows = events["body"]
+    if prefer_senior:
+        senior_rows = [row for row in rows if not _is_junior_event(row[0])]
+        if senior_rows:
+            rows = senior_rows
     best = max(
-        events["body"],
+        rows,
         key=lambda row: _parse_int(row[1]) or 0 if len(row) > 1 else 0,
     )
     return best[0] or None
+
+
+def _is_junior_event(name: str | None) -> bool:
+    return "junior" in (name or "").lower()
+
+
+def _fastest_result(results: list[ParkrunResult]) -> ParkrunResult | None:
+    timed = [item for item in results if item.finish_seconds is not None]
+    if not timed:
+        return None
+    return min(timed, key=lambda item: item.finish_seconds or 0)
+
+
+def _best_age_grade(results: list[ParkrunResult]) -> float | None:
+    graded = [item.age_grade for item in results if item.age_grade is not None]
+    return max(graded) if graded else None
 
 
 def _event_count(events: dict[str, Any], event_name: str | None) -> int | None:
