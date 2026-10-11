@@ -6,11 +6,11 @@
 
 Custom integration that pulls public parkrun statistics into Home Assistant as sensors.
 
-Setup is only your barcode ID and country website. parkrun barcodes are not accounts with passwords; the [official app API](https://developer.parkrun.com/#!/) needs a profile login that most parkrunners never create. This integration reads the same public results page anyone can open in a browser.
+Setup only requires your barcode ID and country website. Parkrun barcodes are not accounts with passwords; the [official app API](https://developer.parkrun.com/#!/) needs a profile login that most parkrunners never create. This integration reads the same public results page anyone can open in a browser.
 
 ## What you get
 
-After setup, Home Assistant creates a device for the athlete and sensors including:
+After setup, Home Assistant creates a device for the runner and provides sensors, including:
 
 - Total parkruns, junior parkruns, volunteer credits, events attended
 - 5k personal best, junior personal best, and best age grade
