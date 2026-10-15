@@ -1,11 +1,12 @@
 {
   "domain": "parkrun",
   "name": "parkrun",
-  "codeowners": [],
+  "codeowners": ["@jfarcher"],
   "config_flow": true,
-  "documentation": "https://www.parkrun.org.uk/",
+  "documentation": "https://github.com/jfarcher/homeassistant-parkrun",
   "integration_type": "service",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/jfarcher/homeassistant-parkrun/issues",
   "requirements": [],
   "version": "0.2.0"
 }
