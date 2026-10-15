@@ -49,3 +49,7 @@ Then restart Home Assistant, go to **Settings → Devices & services → Add int
 ## Notes
 
 parkrun sometimes shows a bot check to datacentre IPs. A Home Assistant install on your home network usually works because it looks like a normal browser visit. If setup fails with a connection error, wait and try again.
+
+##Contributing
+
+Issues and pull requests welcome at [github.com/jfarcher/homeassistant-parkrun](https://github.com/jfarcher/homeassistant-parkrun).
