@@ -12,6 +12,13 @@ release notes.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-05
+
+### Fixed
+
+- Integration manifest now includes `issue_tracker`, `codeowners`, and a `documentation` link to this repository, so the release passes HACS validation.
+- Added an MIT license.
+
 ## [0.2.0] - 2026-10-10
 
 ### Fixed
