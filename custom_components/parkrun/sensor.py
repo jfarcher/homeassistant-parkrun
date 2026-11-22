@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import date
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -32,6 +32,7 @@ class ParkrunSensorEntityDescription(SensorEntityDescription):
     """Describes a parkrun sensor."""
 
     value_fn: Callable[[ParkrunAthleteData], StateType | date]
+    attrs_fn: Callable[[ParkrunAthleteData], Mapping[str, Any]] | None = None
 
 
 SENSOR_DESCRIPTIONS: tuple[ParkrunSensorEntityDescription, ...] = (
@@ -184,6 +185,19 @@ SENSOR_DESCRIPTIONS: tuple[ParkrunSensorEntityDescription, ...] = (
         value_fn=lambda data: data.volunteer_to_next_milestone,
     ),
     ParkrunSensorEntityDescription(
+        key="next_junior_milestone",
+        translation_key="next_junior_milestone",
+        icon="mdi:watch-variant",
+        value_fn=lambda data: data.next_junior_milestone,
+        attrs_fn=lambda data: {"wristband": data.next_junior_milestone_wristband},
+    ),
+    ParkrunSensorEntityDescription(
+        key="junior_to_next_milestone",
+        translation_key="junior_to_next_milestone",
+        icon="mdi:counter",
+        value_fn=lambda data: data.junior_to_next_milestone,
+    ),
+    ParkrunSensorEntityDescription(
         key="home_run",
         translation_key="home_run",
         icon="mdi:home",
@@ -223,3 +237,10 @@ class ParkrunSensor(ParkrunEntity, SensorEntity):
     def native_value(self) -> StateType | date:
         """Return the sensor value."""
         return self.entity_description.value_fn(self.coordinator.data)
+
+    @property
+    def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        """Return extra attributes, if this sensor has any."""
+        if self.entity_description.attrs_fn is None:
+            return None
+        return self.entity_description.attrs_fn(self.coordinator.data)

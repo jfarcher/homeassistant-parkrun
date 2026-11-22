@@ -71,3 +71,7 @@ class ParkrunAthleteData:
     volunteer_club: str | None
     next_volunteer_milestone: int | None
     volunteer_to_next_milestone: int | None
+
+    next_junior_milestone: int | None
+    next_junior_milestone_wristband: str | None
+    junior_to_next_milestone: int | None

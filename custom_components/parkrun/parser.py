@@ -8,7 +8,12 @@ from datetime import date, datetime
 from html.parser import HTMLParser
 from typing import Any
 
-from .const import ADULT_MILESTONES, VOLUNTEER_MILESTONES
+from .const import (
+    JUNIOR_MILESTONES,
+    RUN_MILESTONES,
+    UNDER_18_MILESTONE,
+    VOLUNTEER_MILESTONES,
+)
 from .models import ParkrunAthleteData, ParkrunResult
 
 _TOTAL_RUNS = re.compile(r"(\d+)\s+parkruns total", re.I)
@@ -21,6 +26,7 @@ _RUN_CLUB = re.compile(
     re.I,
 )
 _VOLUNTEER_CLUB = re.compile(r"Member of the Volunteer (\d+) Club", re.I)
+_JUNIOR_PARKRUN_CATEGORY = re.compile(r"^J[MW](10|11-14)$", re.I)
 _CHALLENGE = re.compile(
     r"confirm you are human|just a moment|cf-challenge",
     re.I,
@@ -137,15 +143,27 @@ def parse_athlete_pages(
     if latest and not latest.age_category and age_category:
         latest = replace(latest, age_category=age_category)
 
+    current_category = (latest.age_category if latest else None) or age_category
+    run_milestones = RUN_MILESTONES
+    volunteer_milestones = VOLUNTEER_MILESTONES
+    if _is_under_18(current_category):
+        run_milestones = (UNDER_18_MILESTONE, *RUN_MILESTONES)
+        volunteer_milestones = (UNDER_18_MILESTONE, *VOLUNTEER_MILESTONES)
+
     run_club = _club_label(_RUN_CLUB.findall(profile_html))
     volunteer_club = _club_label(_VOLUNTEER_CLUB.findall(profile_html))
     if not run_club:
-        run_club = _current_club(adult_runs, ADULT_MILESTONES)
+        run_club = _current_club(adult_runs, run_milestones)
     if not volunteer_club:
-        volunteer_club = _current_club(volunteer_count, VOLUNTEER_MILESTONES)
+        volunteer_club = _current_club(volunteer_count, volunteer_milestones)
 
-    next_run = _next_milestone(adult_runs, ADULT_MILESTONES)
-    next_volunteer = _next_milestone(volunteer_count, VOLUNTEER_MILESTONES)
+    next_run = _next_milestone(adult_runs, run_milestones)
+    next_volunteer = _next_milestone(volunteer_count, volunteer_milestones)
+
+    next_junior = None
+    junior_progress = junior_runs + volunteer_count
+    if _is_junior_parkrun_athlete(current_category, junior_runs):
+        next_junior = _next_milestone(junior_progress, tuple(JUNIOR_MILESTONES))
 
     if not full_name:
         msg = "Page did not contain a parkrun athlete profile"
@@ -189,6 +207,13 @@ def parse_athlete_pages(
         next_volunteer_milestone=next_volunteer,
         volunteer_to_next_milestone=(
             next_volunteer - volunteer_count if next_volunteer else None
+        ),
+        next_junior_milestone=next_junior,
+        next_junior_milestone_wristband=(
+            JUNIOR_MILESTONES[next_junior] if next_junior else None
+        ),
+        junior_to_next_milestone=(
+            next_junior - junior_progress if next_junior else None
         ),
     )
 
@@ -447,6 +472,18 @@ def _next_milestone(count: int, milestones: tuple[int, ...]) -> int | None:
         if count < milestone:
             return milestone
     return None
+
+
+def _is_under_18(age_category: str | None) -> bool:
+    """Junior age categories (JM10, JW11-14, JM15-17, ...) start with J."""
+    return bool(age_category) and age_category.upper().startswith("J")
+
+
+def _is_junior_parkrun_athlete(age_category: str | None, junior_runs: int) -> bool:
+    """Junior parkrun is for ages 4-14 (categories J?10 and J?11-14)."""
+    if age_category:
+        return bool(_JUNIOR_PARKRUN_CATEGORY.match(age_category))
+    return junior_runs > 0
 
 
 def _current_club(count: int, milestones: tuple[int, ...]) -> str | None:

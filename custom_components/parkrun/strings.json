@@ -48,6 +48,8 @@
       "volunteer_club": { "name": "Volunteer club" },
       "next_volunteer_milestone": { "name": "Next volunteer milestone" },
       "volunteer_to_next_milestone": { "name": "Volunteer credits to next milestone" },
+      "next_junior_milestone": { "name": "Next junior milestone" },
+      "junior_to_next_milestone": { "name": "Junior parkruns to next milestone" },
       "home_run": { "name": "Home parkrun" },
       "club": { "name": "Running club" }
     },

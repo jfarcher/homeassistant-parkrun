@@ -12,6 +12,14 @@ release notes.
 
 ## [Unreleased]
 
+### Added
+
+- Junior parkrun milestone sensors: next junior milestone (with its wristband colour as an attribute) and how many junior parkruns or volunteer credits to go.
+
+### Fixed
+
+- Run and volunteer milestones now match parkrun's milestone clubs (25, 50, 100, 200, 250, 300, 400, 500, then every 100 to 1000), plus 10 / v10 for under 18s.
+
 ## [0.2.1] - 2026-11-05
 
 ### Fixed

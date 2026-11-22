@@ -19,9 +19,26 @@ USER_AGENT = (
 
 DEFAULT_SCAN_INTERVAL_HOURS = 6
 
-ADULT_MILESTONES = (25, 50, 100, 250, 500, 1000)
-JUNIOR_MILESTONES = (10, 25, 50, 100, 250, 500)
-VOLUNTEER_MILESTONES = (5, 10, 25, 50, 100, 250, 500)
+# https://www.parkrun.com/about/join-us/milestone-clubs/
+# 5k finisher milestones; volunteer milestones (v25, v50, ...) use the same numbers.
+RUN_MILESTONES = (25, 50, 100, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000)
+VOLUNTEER_MILESTONES = RUN_MILESTONES
+# Junior 10 / v10 is only awarded to under 18s.
+UNDER_18_MILESTONE = 10
+
+# Junior (2k) milestones and their wristband colours. Junior finishes plus
+# volunteer credits (2k and 5k) count towards these.
+JUNIOR_MILESTONES: dict[int, str] = {
+    10: "Teal",
+    25: "Peach",
+    50: "Dark blue",
+    75: "Green",
+    100: "Orange",
+    150: "Pink",
+    200: "Yellow",
+    250: "Pale blue",
+    300: "Grey",
+}
 
 # Athlete result pages live on the country websites, not api.parkrun.com.
 COUNTRY_SITES: dict[str, tuple[str, str]] = {

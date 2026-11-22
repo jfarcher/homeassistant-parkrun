@@ -17,6 +17,7 @@ After setup, Home Assistant creates a device for the runner and provides sensors
 - Latest event, date, time, positions, age grade, and age category
 - First parkrun and date, and the event you run most often
 - Current run / volunteer club and how many to the next milestone
+- Next junior milestone, its wristband colour, and how many to go (junior parkrunners aged 4–14)
 - Binary sensors for “latest run was a PB” and “latest run was a first timer at that event”
 
 Results are polled every 6 hours.
