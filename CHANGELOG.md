@@ -10,11 +10,17 @@ heading version matches `custom_components/parkrun/manifest.json` exactly, then
 bump that file. The release workflow publishes that section as the GitHub
 release notes.
 
-## [0.2.2] - 2026-11-22
+## [Unreleased]
+
+## [0.2.3] - 2026-11-22
 
 ### Added
 
 - Junior parkrun milestone sensors: next junior milestone (with its wristband colour as an attribute) and how many junior parkruns or volunteer credits to go.
+
+### Changed
+
+- Integration manifest lists the `health_wellbeing` category.
 
 ### Fixed
 
