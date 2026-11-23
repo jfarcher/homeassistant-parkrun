@@ -10,6 +10,12 @@ heading version matches `custom_components/parkrun/manifest.json` exactly, then
 bump that file. The release workflow publishes that section as the GitHub
 release notes.
 
+## [0.2.5] - 2026-11-23
+
+### Fixed
+
+- "Latest run was a PB" now means an overall PB. It was using parkrun's PB flag, which is per course, so a course PB slower than the athlete's best elsewhere showed as a PB.
+
 ## [0.2.4] - 2026-11-23
 
 ### Fixed

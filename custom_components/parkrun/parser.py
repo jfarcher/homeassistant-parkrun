@@ -122,16 +122,7 @@ def parse_athlete_pages(
             event_name=recent_latest.event_name or latest.event_name,
         )
 
-    latest_was_pb = None
-    if latest:
-        series_best = (
-            junior_best_seconds
-            if _is_junior_event(latest.event_name)
-            else fastest_seconds
-        )
-        latest_was_pb = latest.was_pb
-        if latest_was_pb is False and series_best and latest.finish_seconds:
-            latest_was_pb = latest.finish_seconds == series_best
+    latest_was_pb = _latest_was_overall_pb(parsed_results)
 
     latest_first_timer = None
     if latest and events:
@@ -472,6 +463,25 @@ def _next_milestone(count: int, milestones: tuple[int, ...]) -> int | None:
         if count < milestone:
             return milestone
     return None
+
+
+def _latest_was_overall_pb(results: list[ParkrunResult]) -> bool | None:
+    """Whether the newest result beat every earlier time in the same series.
+
+    parkrun's own PB flag on results tables is per course, so a course PB that
+    is slower than the athlete's best elsewhere does not count here. 5k and
+    junior 2k times are compared separately.
+    """
+    if not results or not results[0].finish_seconds:
+        return None
+    latest = results[0]
+    junior = _is_junior_event(latest.event_name)
+    earlier = [
+        item.finish_seconds
+        for item in results[1:]
+        if item.finish_seconds and _is_junior_event(item.event_name) == junior
+    ]
+    return not earlier or latest.finish_seconds < min(earlier)
 
 
 def _is_under_18(age_category: str | None) -> bool:
