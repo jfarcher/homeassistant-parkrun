@@ -10,7 +10,7 @@ heading version matches `custom_components/parkrun/manifest.json` exactly, then
 bump that file. The release workflow publishes that section as the GitHub
 release notes.
 
-## [Unreleased]
+## [0.2.4] - 2026-11-23
 
 ### Fixed
 
