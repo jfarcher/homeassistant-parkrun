@@ -12,6 +12,10 @@ release notes.
 
 ## [Unreleased]
 
+### Fixed
+
+- Diagnostics downloads no longer include the athlete's name, athlete ID or profile URL, so they are safe to attach to public issues.
+
 ## [0.2.3] - 2026-11-22
 
 ### Added

@@ -14,7 +14,19 @@ if TYPE_CHECKING:
 
     from . import ParkrunConfigEntry
 
-TO_REDACT = {"avatar_url"}
+# Diagnostics get attached to public issues, so strip anything that names or
+# identifies the athlete. The entry title is the athlete's full name, the
+# unique ID is their athlete ID, and the profile URL embeds the athlete ID.
+TO_REDACT = {
+    CONF_ATHLETE_ID,
+    "avatar_url",
+    "first_name",
+    "full_name",
+    "last_name",
+    "profile_url",
+    "title",
+    "unique_id",
+}
 
 
 async def async_get_config_entry_diagnostics(
@@ -25,7 +37,6 @@ async def async_get_config_entry_diagnostics(
     coordinator = entry.runtime_data
     return {
         "entry": async_redact_data(entry.as_dict(), TO_REDACT),
-        "athlete_id": entry.data.get(CONF_ATHLETE_ID),
         "country": entry.data.get(CONF_COUNTRY),
         "data": async_redact_data(asdict(coordinator.data), TO_REDACT),
     }
