@@ -24,19 +24,20 @@ Results are polled every 6 hours.
 
 ## Install
 
-### HACS
+### Marketplace (formerly HACS)
 
-Use this link to directly go to the repository in HACS
+1. Open Marketplace in Home Assistant and search for **parkrun**.
+2. Open it and click **Download**.
+
+Or use this link to go straight to the integration in Marketplace:
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jfarcher&repository=homeassistant-parkrun&category=integration)
 
-_or_
+If parkrun doesn't show up in the search, add it as a custom repository instead:
 
-1. Install [HACS](https://hacs.xyz) if you don't have it already
-2. Open HACS in Home Assistant
-3. Add `jfarcher/homeassistant-parkrun` as a custom repository (Integration)
-4. Search for "parkrun"
-5. Click the download button
+1. In Marketplace, open the ⋮ menu and choose **Custom repositories**.
+2. Enter `https://github.com/jfarcher/homeassistant-parkrun`, pick **Integration** as the type, and click **Add**.
+3. Search for **parkrun** and click **Download**.
 
 Then restart Home Assistant, go to **Settings → Devices & services → Add integration**, and search for **parkrun**. Enter your barcode ID (`A1234567` or `1234567`) and the country site you normally use.
 
